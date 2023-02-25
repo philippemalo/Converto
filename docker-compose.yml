@@ -1,0 +1,21 @@
+version: "3"
+services:
+  mongo:
+    build: ./Model/database
+    restart: always
+    env_file:
+      - ./Model/database/.env
+    ports:
+      - "27017:27017"
+  prisma:
+    build: ./Model/ORM
+    ports:
+      - "4466:4466"
+    depends_on:
+      - mongo
+  # express:
+  #   depends_on:
+  #     - prisma
+  # vue:
+  #   depends_on:
+  #     - express
