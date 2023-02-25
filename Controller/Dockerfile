@@ -12,4 +12,4 @@ ENV PORT=4466
 
 EXPOSE 4466
 
-CMD ["npm", "start"]
+CMD ["npm", "run", "start"]

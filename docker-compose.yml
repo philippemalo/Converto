@@ -1,18 +1,17 @@
 version: "3"
 services:
   mongo:
-    build: ./Model/database
-    restart: always
+    build: ./Model
     env_file:
-      - ./Model/database/.env
+      - ./Model/.env
     ports:
       - "27017:27017"
   prisma:
-    build: ./Model/ORM
+    build: ./Controller
+    env_file:
+      - ./Controller/.env
     ports:
       - "4466:4466"
-    depends_on:
-      - mongo
   # express:
   #   depends_on:
   #     - prisma
