@@ -6,15 +6,13 @@ services:
       - ./Model/.env
     ports:
       - "27017:27017"
-  prisma:
+  node:
     build: ./Controller
     env_file:
       - ./Controller/.env
     ports:
       - "4466:4466"
-  # express:
-  #   depends_on:
-  #     - prisma
-  # vue:
-  #   depends_on:
-  #     - express
+  vue:
+    build: ./View
+    ports:
+      - "8000:8000"
