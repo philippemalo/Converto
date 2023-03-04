@@ -1,0 +1,18 @@
+version: "3"
+services:
+  mongo:
+    build: ./Model
+    env_file:
+      - ./Model/.env
+    ports:
+      - "27017:27017"
+  # node:
+  #   build: ./Controller
+  #   env_file:
+  #     - ./Controller/.env
+  #   ports:
+  #     - "4466:4466"
+  # vue:
+  #   build: ./View
+  #   ports:
+  #     - "8000:8000"
