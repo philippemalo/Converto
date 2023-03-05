@@ -17,13 +17,16 @@ passport.use(
         const user = await prisma.user.findUnique({ where: { email } });
 
         // If user exists but password is null, then the user has signed up using Google
-        if (!user || !user.password) {
-          return done(null, false, { message: "Incorrect email or password." });
+        if (!user) {
+          return done(null, false, { message: "Incorrect email." });
+        }
+        if (!user.password) {
+          return done(null, false, { message: "Incorrect sign in method." });
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-          return done(null, false, { message: "Incorrect email or password." });
+          return done(null, false, { message: "Incorrect password." });
         }
 
         return done(null, user);
@@ -34,67 +37,67 @@ passport.use(
   )
 );
 
-passport.use(
-  "google",
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID as string,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      callbackURL: "http://localhost:4466/auth/google/callback",
-      scope: ["profile"],
-      state: true,
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        console.log("REEEEEEEE", accessToken, refreshToken, profile);
-        if (!profile.emails?.length) {
-          return done(null, false, { message: "Email not found" });
-        }
-        const email = profile.emails[0].value;
-        let user = await prisma.user.findUnique({ where: { email } });
-        if (!user) {
-          user = await prisma.user.create({
-            data: {
-              email,
-              name: profile.displayName,
-            },
-          });
-        }
-        const authDetails = await prisma.authDetails.findUnique({
-          where: { userId: user.id },
-        });
-        if (!authDetails) {
-          await prisma.authDetails.create({
-            data: {
-              accessToken,
-              refreshToken,
-              userId: user.id,
-            },
-          });
-        } else {
-          await prisma.authDetails.update({
-            where: { id: authDetails.id },
-            data: {
-              accessToken,
-              refreshToken,
-            },
-          });
-        }
-        return done(null, user);
-      } catch (err) {
-        if (err instanceof Error) {
-          return done(err);
-        }
-      }
-    }
-  )
-);
+// passport.use(
+//   "google",
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GOOGLE_CLIENT_ID as string,
+//       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+//       callbackURL: "http://localhost:4466/auth/google/callback",
+//       scope: ["profile"],
+//       state: true,
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         console.log("REEEEEEEE", accessToken, refreshToken, profile);
+//         if (!profile.emails?.length) {
+//           return done(null, false, { message: "Email not found" });
+//         }
+//         const email = profile.emails[0].value;
+//         let user = await prisma.user.findUnique({ where: { email } });
+//         if (!user) {
+//           user = await prisma.user.create({
+//             data: {
+//               email,
+//               name: profile.displayName,
+//             },
+//           });
+//         }
+//         const authDetails = await prisma.authDetails.findUnique({
+//           where: { userId: user.id },
+//         });
+//         if (!authDetails) {
+//           await prisma.authDetails.create({
+//             data: {
+//               accessToken,
+//               refreshToken,
+//               userId: user.id,
+//             },
+//           });
+//         } else {
+//           await prisma.authDetails.update({
+//             where: { id: authDetails.id },
+//             data: {
+//               accessToken,
+//               refreshToken,
+//             },
+//           });
+//         }
+//         return done(null, user);
+//       } catch (err) {
+//         if (err instanceof Error) {
+//           return done(err);
+//         }
+//       }
+//     }
+//   )
+// );
 
-passport.serializeUser((user, done) => {
+passport.serializeUser((user: any, done) => {
   done(null, user.id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id: any, done) => {
   try {
     const user = await prisma.user.findUnique({ where: { id } });
     done(null, user);
