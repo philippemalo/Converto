@@ -15,17 +15,8 @@ datasource db {
 model User {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String   @unique
-  password String?
+  password String
   name    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  authDetails AuthDetails?
-}
-
-model AuthDetails {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  accessToken String
-  refreshToken String
-  userId String @unique @db.ObjectId
-  user User @relation(fields: [userId], references: [id])
 }

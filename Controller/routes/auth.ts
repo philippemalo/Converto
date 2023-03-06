@@ -28,29 +28,21 @@ authRouter.post("/signup", async (req, res, next) => {
 });
 
 // Sign in endpoint
-authRouter.post("/signin", (req, res, next) => {
-  passport.authenticate("local", (err: any, user: any, info: any) => {
+authRouter.post(
+  "/signin",
+  passport.authenticate("local", {
+    failureRedirect: "/login",
+    successRedirect: "/",
+  })
+);
+
+authRouter.get("/signout", (req, res, next) => {
+  req.logout((err) => {
     if (err) {
       return next(err);
     }
-    if (!user) {
-      return res.status(401).json({ message: info.message });
-    }
-    res.json({ user });
-  })(req, res, next);
+    res.redirect("/");
+  });
 });
-
-// authRouter.get("/signout", (req, res, next) => {
-//   if (!req.isAuthenticated()) {
-//     return res.status(401).json({ message: "Not authenticated" });
-//   }
-//   req.logout((err) => {
-//     if (err) {
-//       return next(err);
-//     }
-//     res.status(204).end();
-//   });
-//   res.status(204).end();
-// });
 
 export default authRouter;

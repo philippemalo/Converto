@@ -8,7 +8,7 @@ import passport from "./passport";
 
 const app = express();
 
-const sess = {
+const sessionConfig = {
   genid: (req: express.Request) => {
     return uid.sync(18);
   },
@@ -25,15 +25,9 @@ const sess = {
 };
 
 app.use(express.json());
-app.use(session(sess));
+app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
-
-// app.use((req, res, next) => {
-//   console.log(req.session);
-//   console.log(req.user);
-//   next();
-// });
 
 app.use(router);
 
