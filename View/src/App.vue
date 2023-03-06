@@ -1,5 +1,8 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>Hello Vite|Vue 3 + TypeScript + TailwindCSS!</div>
+  <router-link class="absolute top-5 left-5 font-bold hover:underline" to="/"
+    >Home</router-link
+  >
+  <router-view />
 </template>
