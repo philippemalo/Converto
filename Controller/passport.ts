@@ -8,18 +8,26 @@ passport.use(
   "local",
   new LocalStrategy(
     {
-      usernameField: "email",
+      usernameField: "username",
       passwordField: "password",
     },
-    async (email, password, done) => {
+    async (username, password, done) => {
       try {
-        const user = await prisma.user.findUnique({ where: { email } });
+        const user = await prisma.user.findFirst({
+          where: {
+            OR: [
+              {
+                email: username,
+              },
+              {
+                username: username,
+              },
+            ],
+          },
+        });
 
         if (!user) {
-          return done(null, false, { message: "Incorrect email." });
-        }
-        if (!user.password) {
-          return done(null, false, { message: "Incorrect sign in method." });
+          return done(null, false, { message: "Incorrect email or username." });
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
