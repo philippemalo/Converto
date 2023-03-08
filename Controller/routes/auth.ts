@@ -53,21 +53,16 @@ authRouter.post("/signup", async (req, res, next) => {
 });
 
 // Sign in endpoint
-authRouter.post(
-  "/signin",
-  passport.authenticate("local", {
-    failureRedirect: "/login",
-    successRedirect: "/",
-  })
-);
+authRouter.post("/signin", passport.authenticate("local"), (req, res) => {
+  return res.status(200).json({ user: { ...req.user, password: "*" } });
+});
 
-authRouter.get("/signout", (req, res, next) => {
+// passportjs sign out endpoint
+authRouter.post("/signout", (req, res, next) => {
   req.logout((err) => {
-    if (err) {
-      return next(err);
-    }
-    res.redirect("/");
+    next(err);
   });
+  return res.status(200).json({ message: "Sign out successful" });
 });
 
 export default authRouter;

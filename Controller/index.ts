@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import uid from "uid-safe";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 
 import router from "./routes";
 import passport from "./passport";
@@ -23,6 +24,13 @@ const sessionConfig = {
     collectionName: "Sessions",
   }),
 };
+
+app.use(
+  cors({
+    origin: "http://localhost:8000",
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(session(sessionConfig));
