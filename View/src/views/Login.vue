@@ -36,12 +36,14 @@ const login = async () => {
             class="p-1 rounded transition border hover:bg-slate-100 focus:bg-slate-100 focus:outline-none"
             type="text"
             name="emailOrUsername"
+            required
           />
           <label name="password">Password</label>
           <input
             class="p-1 rounded transition border hover:bg-slate-100 focus:bg-slate-100 focus:outline-none"
             type="password"
             name="password"
+            required
           />
           <input
             id="login-btn"

@@ -8,6 +8,6 @@ const api = axios.create({
 const signin = (username: string, password: string) =>
   api.post("/auth/signin", { username, password });
 
-const signout = () => api.post("/auth/signout");
+const signout = () => api.get("/auth/signout");
 
 export { signin, signout };
