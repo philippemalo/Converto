@@ -54,7 +54,8 @@ authRouter.post("/signup", async (req, res, next) => {
 
 // Sign in endpoint
 authRouter.post("/signin", passport.authenticate("local"), (req, res) => {
-  return res.status(200).json("Sign in successful");
+  const cleanUser = { ...req.user, password: undefined };
+  return res.status(200).json(cleanUser);
 });
 
 // Sign out endpoint

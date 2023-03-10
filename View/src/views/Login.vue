@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { signin } from "../services/api";
 import router from "../router";
+import { useAuthStore } from "../stores/auth";
+
+const authStore = useAuthStore();
 
 const login = async () => {
   const email = document.querySelector(
@@ -15,6 +18,7 @@ const login = async () => {
   if (response.status === 200) {
     console.log(response);
     console.log("Login successful");
+    authStore.setUser(response.data);
     router.push("/");
   } else {
     console.log(response);
