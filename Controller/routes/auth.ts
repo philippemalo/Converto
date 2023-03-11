@@ -46,7 +46,7 @@ authRouter.post("/signup", async (req, res, next) => {
       },
     });
 
-    return res.status(201).json({ user: newUser });
+    return res.status(200).json({ ...newUser, password: undefined });
   } catch (err) {
     return next(err);
   }
@@ -64,6 +64,14 @@ authRouter.get("/signout", (req, res, next) => {
     next(err);
   });
   return res.status(200).json("Sign out successful");
+});
+
+authRouter.get("/session", (req, res) => {
+  if (!req.user) {
+    return res.status(200).json(null);
+  }
+  const cleanUser = { ...req.user, password: undefined };
+  return res.status(200).json(cleanUser);
 });
 
 export default authRouter;

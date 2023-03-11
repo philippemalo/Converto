@@ -1,16 +1,23 @@
 <script setup lang="ts">
-import { signout } from "./services/api";
-import router from "./router";
+import { signout, session } from "./services/api";
+import { useAuthStore } from "./stores/auth";
+
+const authStore = useAuthStore();
 
 const logout = async () => {
   const response = await signout();
-  if (response.status === 200) {
-    console.log("Logout successful");
-    router.push("/");
-  } else {
+  if (response.status !== 200) {
     console.log("Logout failed");
   }
+  authStore.setUser(null);
 };
+
+const checkSession = async () => {
+  const response = await session();
+  authStore.setUser(response.data);
+};
+
+checkSession();
 </script>
 
 <template>
@@ -18,10 +25,13 @@ const logout = async () => {
     >Home</router-link
   >
   <button
+    v-if="authStore.isAuthenticated"
     @click="logout"
     class="absolute top-5 right-5 font-bold hover:underline"
   >
     Logout
   </button>
-  <router-view />
+  <div class="grid w-screen h-screen place-items-center bg-slate-50">
+    <router-view />
+  </div>
 </template>

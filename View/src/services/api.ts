@@ -10,4 +10,20 @@ const signin = (username: string, password: string) =>
 
 const signout = () => api.get("/auth/signout");
 
-export { signin, signout };
+const signup = (
+  name: string,
+  username: string,
+  email: string,
+  password: string
+) => {
+  return api.post("/auth/signup", {
+    name,
+    username,
+    email,
+    password,
+  });
+};
+
+const session = () => api.get("/auth/session");
+
+export { signin, signout, signup, session };
