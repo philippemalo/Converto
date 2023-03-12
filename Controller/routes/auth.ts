@@ -11,9 +11,15 @@ authRouter.post("/signup", async (req, res, next) => {
   const { email, password, name, username } = req.body;
   try {
     const existingUser = await prisma.user.findUnique({ where: { email } });
+    const existingUsername = await prisma.user.findUnique({
+      where: { username },
+    });
 
     if (existingUser) {
       return res.status(409).json({ message: "Email already in use." });
+    }
+    if (existingUsername) {
+      return res.status(409).json({ message: "Username already in use." });
     }
 
     if (!utils.isValidEmail(email)) {

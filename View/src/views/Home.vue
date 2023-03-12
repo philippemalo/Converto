@@ -3,6 +3,41 @@ import ColorfulContainer from "../components/ColorfulContainer.vue";
 import { useAuthStore } from "../stores/auth";
 
 const authStore = useAuthStore();
+
+const items = [
+  {
+    name: "Vite",
+    url: "https://vitejs.dev/",
+  },
+  {
+    name: "Vue",
+    url: "https://vuejs.org/",
+  },
+  {
+    name: "Tailwind",
+    url: "https://tailwindcss.com/",
+  },
+  {
+    name: "Typescript",
+    url: "https://www.typescriptlang.org/",
+  },
+  {
+    name: "Nodejs",
+    url: "https://nodejs.org/en/",
+  },
+  {
+    name: "Prisma",
+    url: "https://www.prisma.io/",
+  },
+  {
+    name: "MongoDB",
+    url: "https://www.mongodb.com/",
+  },
+  {
+    name: "Docker",
+    url: "https://www.docker.com/",
+  },
+];
 </script>
 
 <template>
@@ -11,29 +46,8 @@ const authStore = useAuthStore();
     <ul
       class="p-4 flex flex-row flex-wrap gap-3 text-lg hover:a font-light justify-center items-center"
     >
-      <li class="hover:text-orange-600">
-        <a href="https://vitejs.dev/" target="_blank">Vite</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://vuejs.org/" target="_blank">Vue</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://tailwindcss.com/" target="_blank">Tailwind</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://www.typescriptlang.org/" target="_blank">Typescript</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://nodejs.org/en/" target="_blank">Nodejs</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://www.prisma.io/" target="_blank">Prisma</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://www.mongodb.com/" target="_blank">MongoDB</a>
-      </li>
-      <li class="hover:text-orange-600">
-        <a href="https://www.docker.com/" target="_blank">Docker</a>
+      <li class="hover:text-orange-600" v-for="item in items">
+        <a :href="item.url" target="_blank">{{ item.name }}</a>
       </li>
     </ul>
     <div class="text-sm font-light">

@@ -8,6 +8,7 @@ const logout = async () => {
   const response = await signout();
   if (response.status !== 200) {
     console.log("Logout failed");
+    return;
   }
   authStore.setUser(null);
 };

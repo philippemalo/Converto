@@ -3,16 +3,11 @@ import { signup } from "../services/api";
 import { useAuthStore } from "../stores/auth";
 import router from "../router";
 import ColorfulContainer from "../components/ColorfulContainer.vue";
+import { ref } from "vue";
 
 const authStore = useAuthStore();
 
-addEventListener("keydown", (e) => {
-  if (e.key === "Escape") {
-    const element = document.activeElement as HTMLElement;
-    if (!element) return;
-    element.blur();
-  }
-});
+const accountCreationError = ref({ error: false, message: "" });
 
 const register = async () => {
   const name = document.querySelector("input[name=name]") as HTMLInputElement;
@@ -24,22 +19,50 @@ const register = async () => {
     "input[name=password]"
   ) as HTMLInputElement;
 
-  const response = await signup(
-    name.value,
-    username.value,
-    email.value,
-    password.value
-  );
-
-  if (response.status !== 200) {
-    console.log("Registration failed");
-  }
-  authStore.setUser(response.data);
-  router.push("/");
+  await signup(name.value, username.value, email.value, password.value)
+    .then((res) => {
+      if (res.status === 200) {
+        authStore.setUser(res.data);
+        router.push("/");
+      }
+    })
+    .catch((err) => {
+      accountCreationError.value = {
+        error: true,
+        message: err.response.data.message,
+      };
+    });
 };
+
+addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const element = document.activeElement as HTMLElement;
+    if (!element) return;
+    element.blur();
+  }
+});
+
+addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const element = document.activeElement as HTMLElement;
+    const passwordInput = document.querySelector(
+      "input[name=password]"
+    ) as HTMLElement;
+    if (!element) return;
+    if (element === passwordInput) {
+      register();
+    }
+  }
+});
 </script>
 
 <template>
+  <div
+    v-if="accountCreationError.error"
+    class="absolute top-5 left-1/2 transform -translate-x-1/2 border rounded p-2 bg-red-100 text-red-500"
+  >
+    {{ accountCreationError.message }}
+  </div>
   <ColorfulContainer>
     <form class="flex flex-col text-lg font-light">
       <label name="name">Name</label>

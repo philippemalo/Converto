@@ -22,7 +22,6 @@ const login = async () => {
       if (res.status === 200) {
         authStore.setUser(res.data);
         router.push("/");
-        console.log(res);
       }
     })
     .catch((err) => {
@@ -30,7 +29,26 @@ const login = async () => {
     });
 };
 
-console.log(wrongCredentials.value);
+addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    const element = document.activeElement as HTMLElement;
+    if (!element) return;
+    element.blur();
+  }
+});
+
+addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const element = document.activeElement as HTMLElement;
+    const passwordInput = document.querySelector(
+      "input[name=password]"
+    ) as HTMLElement;
+    if (!element) return;
+    if (element === passwordInput) {
+      login();
+    }
+  }
+});
 </script>
 
 <template>

@@ -22,12 +22,16 @@ passport.use(
       });
 
       if (!user) {
-        return done(null, false, { message: "Incorrect email or username." });
+        return done(null, false, {
+          message: "Invalid Email/Username or Password",
+        });
       }
 
       const passwordMatch = await bcrypt.compare(password, user.password);
       if (!passwordMatch) {
-        return done(null, false, { message: "Incorrect password." });
+        return done(null, false, {
+          message: "Invalid Email/Username or Password",
+        });
       }
 
       return done(null, user);
