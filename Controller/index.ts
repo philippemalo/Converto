@@ -1,25 +1,43 @@
 import express from "express";
-import { PrismaClient } from "./prisma/generated/prisma-client-js";
+import session from "express-session";
+import uid from "uid-safe";
+import MongoStore from "connect-mongo";
+import cors from "cors";
+
+import router from "./routes";
+import passport from "./passport";
 
 const app = express();
 
-const prisma = new PrismaClient();
+const sessionConfig = {
+  genid: (req: express.Request) => {
+    return uid.sync(18);
+  },
+  secret: process.env.SESSION_SECRET as string,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7,
+  },
+  resave: true,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.DATABASE_URL as string,
+    collectionName: "Sessions",
+  }),
+};
 
-async function main() {}
-
-main()
-  .then(async () => {
-    await prisma.$disconnect();
+app.use(
+  cors({
+    origin: "http://localhost:8000",
+    credentials: true,
   })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });
+);
 
-app.get("/", (req, res) => {
-  res.send("PRISMA ORM!");
-});
+app.use(express.json());
+app.use(session(sessionConfig));
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use(router);
 
 app.listen(4466, () => {
   console.log("Server is running");
