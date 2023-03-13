@@ -22,13 +22,15 @@ checkSession();
 </script>
 
 <template>
-  <router-link class="absolute top-5 left-5 font-bold hover:underline" to="/"
+  <router-link
+    class="absolute top-5 left-5 font-bold hover:underline z-10"
+    to="/"
     >Home</router-link
   >
   <button
     v-if="authStore.isAuthenticated"
     @click="logout"
-    class="absolute top-5 right-5 font-bold hover:underline"
+    class="absolute top-5 right-5 font-bold hover:underline z-10"
   >
     Logout
   </button>

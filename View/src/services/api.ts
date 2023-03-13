@@ -26,4 +26,6 @@ const signup = (
 
 const session = () => api.get("/auth/session");
 
-export { signin, signout, signup, session };
+const user = (username: string) => api.get(`/user/${username}`);
+
+export { signin, signout, signup, session, user };
