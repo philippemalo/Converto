@@ -18,7 +18,7 @@ onBeforeMount(async () => {
       userInfo.value = {
         name: res.data.name,
         username: res.data.username,
-        owner: authStore?.user?.username === res.data.username,
+        owner: authStore.getUser!.username === res.data.username,
       };
     })
     .catch((err) => {
@@ -33,8 +33,6 @@ onBeforeMount(async () => {
     <div v-if="!userInfo.owner" class="text-lg font-light">
       Welcome to {{ userInfo.name }}'s page
     </div>
-    <div v-if="userInfo.owner" class="text-lg font-light">
-      Welcome to your page
-    </div>
+    <div v-else class="text-lg font-light">Welcome to your page</div>
   </ColorfulContainer>
 </template>

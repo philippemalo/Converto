@@ -72,8 +72,8 @@ const items = [
     <div v-if="authStore.isAuthenticated">
       <div class="text-lg font-light mt-4">
         Welcome
-        <router-link :to="authStore.user.username">{{
-          authStore.user.username
+        <router-link :to="authStore.getUser!.username">{{
+          authStore.getUser!.username
         }}</router-link>
       </div>
     </div>
