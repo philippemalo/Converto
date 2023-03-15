@@ -7,7 +7,7 @@
     "dev": "vite",
     "host": "vite --host",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --port 8000"
   },
   "dependencies": {
     "axios": "^1.3.4",

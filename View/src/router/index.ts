@@ -26,6 +26,10 @@ const routes = [
     path: "/:username",
     component: Profile,
   },
+  {
+    path: "/:pathMatch(.*)*",
+    redirect: "/notfound",
+  },
 ];
 
 const router = createRouter({

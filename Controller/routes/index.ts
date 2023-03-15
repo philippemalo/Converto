@@ -4,6 +4,10 @@ import userRouter from "./user";
 
 const router = Router();
 
+router.get("/", (req, res) => {
+  res.status(200).json({ message: "MVC-Template server" });
+});
+
 router.use("/auth", authRouter);
 router.use("/user", userRouter);
 
