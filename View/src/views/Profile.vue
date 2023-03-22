@@ -11,6 +11,7 @@ const userInfo = ref({ name: "", username: "", owner: false });
 onBeforeMount(async () => {
   await user(window.location.pathname.slice(1))
     .then((res) => {
+      console.log(res);
       if (res.status === 404) {
         router.replace("/notfound");
       }
@@ -18,7 +19,7 @@ onBeforeMount(async () => {
       userInfo.value = {
         name: res.data.name,
         username: res.data.username,
-        owner: authStore.getUser!.username === res.data.username,
+        owner: authStore?.getUser?.username === res.data.username,
       };
     })
     .catch((err) => {

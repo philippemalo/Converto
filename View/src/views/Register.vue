@@ -90,7 +90,7 @@ addEventListener("keydown", (e) => {
         name="password"
       />
       <input
-        class="bg-fuchsia-500 my-4 p-1 rounded text-white transition cursor-pointer hover:scale-105"
+        class="bg-green-500 my-4 p-1 rounded text-white transition cursor-pointer hover:scale-105"
         type="button"
         value="Create Account"
         @click="register"
@@ -98,7 +98,7 @@ addEventListener("keydown", (e) => {
     </form>
     <div class="mt-4">
       Already have an account?
-      <router-link class="text-blue-600" to="/login">Sign in here</router-link>
+      <router-link class="text-blue-500" to="/login">Sign in here</router-link>
     </div>
   </ColorfulContainer>
 </template>

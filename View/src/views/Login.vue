@@ -76,15 +76,15 @@ addEventListener("keydown", (e) => {
       />
       <input
         id="login-btn"
-        class="bg-fuchsia-500 my-4 p-1 rounded text-white transition cursor-pointer hover:scale-105"
+        class="bg-green-500 my-4 p-1 rounded text-white transition cursor-pointer hover:scale-105"
         type="button"
-        value="Sign in"
+        value="Sign In"
         @click="login"
       />
     </form>
     <div class="mt-4">
       Don't have an account?
-      <router-link class="text-blue-600" to="/register"
+      <router-link class="text-blue-500" to="/register"
         >Register here</router-link
       >
     </div>
