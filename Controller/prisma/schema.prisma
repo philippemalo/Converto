@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  output="./generated/prisma-client-js"
+  provider      = "prisma-client-js"
+  output        = "./generated/prisma-client-js"
   binaryTargets = ["native", "debian-openssl-1.1.x"]
 }
 
@@ -12,12 +12,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// A User can have basic informations (name, location, profile picture, about, skills), zero to many Socials and zero to many Publication.
 model User {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   @unique
-  password String
-  name    String
-  username String @unique
+  id             String    @id @default(auto()) @map("_id") @db.ObjectId
+  email          String    @unique
+  password       String
+  name           String
+  username       String    @unique
+  location       String?
+  profilePicture String?
+  about          String?
+  skills         String[]
+  socials        Social[]
+  publications   Publication[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+// A Social can have a name and a link, and belongs to a User.
+model Social {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+  link String
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+}
+
+// A Publication has a name, zero to many Image, and belongs to a User. 
+// If collection is true, Publication can have zero to many Image. 
+// If collection is false, Publication can have zero to one Image.
+model Publication {
+  id   String @id @default(auto()) @map("_id") @db.ObjectId
+  name String
+
+  collection Boolean @default(false)
+  images Image[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id])
+  userId String @db.ObjectId
+}
+
+// An Image can have a description, has one image url, and belongs to a Publication.
+model Image {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  description String?
+  imageURL    String
+  
+  Publication     Publication @relation(fields: [publicationId], references: [id])
+  publicationId   String  @db.ObjectId
 }
